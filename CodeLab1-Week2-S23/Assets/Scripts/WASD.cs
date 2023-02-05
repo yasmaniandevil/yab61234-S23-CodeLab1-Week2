@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WASD : MonoBehaviour
@@ -12,6 +14,20 @@ public class WASD : MonoBehaviour
     public static WASD Instance;
     
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -42,6 +58,12 @@ public class WASD : MonoBehaviour
         {
             _rb.AddForce(forceAmount, 0, 0);
             //Debug.Log("right");
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Debug.Log("Hit Spacebar");
+            _rb.AddForce(0, forceAmount, 0);
         }
     }
 }
